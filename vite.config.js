@@ -5,6 +5,7 @@ import reactRefresh from '@vitejs/plugin-react-refresh'
  * @type { import('vite').UserConfig }
  */
 export default {
+  base: "/Music-List/",
   plugins: [reactRefresh()],
   server: {
     host: '0.0.0.0',
