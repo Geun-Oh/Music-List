@@ -1,13 +1,7 @@
-## Running React on Repl.it
+## repl.it을 활용하여 시작하는 첫 번째 프로젝트!!
 
-[React](https://reactjs.org/) is a popular JavaScript library for building user interfaces.
+last.fm 에서 가져온 OpenAPI를 활용한 음악 검색 사이트 제작
 
-[Vite](https://vitejs.dev/) is a blazing fast frontend build tool that includes features like Hot Module Reloading (HMR), optimized builds, and TypeScript support out of the box.
+## 22.02.27 styled-components를 이용하여 main page의 스타일을 적용하였고, detail page에 대한 정확한 스타일 디렉팅이 완료되지 않아 기본적인 것들만 해둔 상태이다.
 
-Using the two in conjunction is one of the fastest ways to build a web app.
-
-### Getting Started
-- Hit run
-- Edit [App.jsx](#src/App.jsx) and watch it live update!
-
-By default, Replit runs the `dev` script, but you can configure it by changing the `run` field in the `.replit` file.
+.추후에 더 다양한 url을 통해 엔진을 구체화할 생각도 있으나. 아마 나중의 얘기일 것 같다...!
