@@ -15,16 +15,15 @@ function AlbumSearch() {
       setAlbumlist(a.results.albummatches.album)
     })
   }
-  
-React.useEffect(() => {console.log(albumlist)}, [albumlist])
-const rname = useSelector(state => state.name)
+  const album = React.useRef()
+  const rname = useSelector(state => state.name)
+  React.useEffect(() => {console.log(rname)}, [rname]) 
   
   return(
     <div>
-      <button onClick={() => dispatch(visibletrue())}>visible</button>
       <Modal />
     <BackDiv>
-      <h1>{rname}</h1>
+      <h1>Music Search Engine</h1>
       <StyledForm onSubmit={findAlbum}>
         <StyledInput type="text" placeholder=" Wanna get Info of?" />
         <StyledButton type="submit">Submit</StyledButton>
@@ -33,8 +32,7 @@ const rname = useSelector(state => state.name)
          {albumlist === undefined ? <h1>Please input your own keyword!</h1> : 
             <AlbumListDiv>
             {[...albumlist].map((item, index) =>
-              <AlbumDiv key={index} onClick={() => dispatch({type: "MOD", name: item.name, artist: item.artist,
-  imgurl: item.image[3]['#text']})}>
+              <AlbumDiv ref={album} key={index} onClick={() => dispatch({type: "MOD", name: item.name, artist: item.artist, imgurl: item.image[3]['#text'], visible: true})}>
                 <AlbumTitleDiv>{item.name}</AlbumTitleDiv>
                 <h2>-{item.artist}-</h2>
                 <img src={item.image[3]['#text']} style={ImgStyle}/>
@@ -47,7 +45,6 @@ const rname = useSelector(state => state.name)
     </div>
   )
 }
-
 
 const BackDiv = styled.div`
   padding-left: 18vw;
