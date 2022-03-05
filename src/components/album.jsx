@@ -11,8 +11,7 @@ function Album() {
   const findSelected = async () => {
     await fetch(url)
     .then(a => a.json())
-    .then(a => setSelected(a.track))
-    .then(setSelected(selected => [...selected]))
+    .then(a => setSelected(pre => [...pre, a.track]))
   }
 
 const rname = useSelector(state => state.name)

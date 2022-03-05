@@ -16,9 +16,9 @@ function Modal() {
     await fetch(url)
     .then(a => a.json())
     .then(a => setSelected(a.track))
-    .then(setSelected(selected => [...selected]))
-    .then(console.log(selected))
   }
+  React.useEffect(() => findSelected(), [url])
+  React.useEffect(() => console.log(selected), [selected])
   
   return(
     <StyledDiv visible={visible}>
@@ -26,8 +26,8 @@ function Modal() {
         <div style={pcolor}>
           <h1>{rname}</h1>
           <p>{rartist}</p>
-          <h3>{selected.listeners} of listeners love this song!</h3>
-          <h3>{selected.playcount} played!</h3>
+          <h3>{selected && selected.listeners} of listeners love this song!</h3>
+          <h3>{selected && selected.playcount} played!</h3>
         </div>
         : <p>Loading...</p> }</StyledMain>
       <button onClick={() => dispatch(visiblefalse())}>Bye!</button>
