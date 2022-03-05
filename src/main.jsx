@@ -3,9 +3,14 @@ import ReactDOM from 'react-dom'
 import App from './App'
 import { modifier } from '../reducer/store'
 import { Provider } from 'react-redux'
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
+import createSagaMiddleware from 'redux-saga'
+import { modvisible } from '../reducer/store'
 
-const store = createStore(modifier)
+const saga = createSagaMiddleware()
+const store = createStore(modifier, applyMiddleware(thunk, saga))
+saga.run(modvisible)
 
 ReactDOM.render(
   <React.StrictMode>

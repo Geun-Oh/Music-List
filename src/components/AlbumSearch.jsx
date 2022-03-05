@@ -1,37 +1,41 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, batch } from "react-redux"
 import styled from 'styled-components'
+import Modal from './Modal'
+import { visibletrue, visiblefalse } from '../../reducer/store'
 
 function AlbumSearch() {
   const [ albumlist, setAlbumlist ] = React.useState()
   const dispatch = useDispatch()
+
   const findAlbum = async (event) => {
     event.preventDefault()
     await fetch(`https://ws.audioscrobbler.com/2.0/?method=album.search&album=${event.target[0].value}&api_key=91c5c92bb86941ab984a066b1da980ed&format=json`).then(a => a.json()).then(a => {
       setAlbumlist(a.results.albummatches.album)
     })
   }
-
-
+  
 React.useEffect(() => {console.log(albumlist)}, [albumlist])
-
-
+const rname = useSelector(state => state.name)
+  
   return(
     <div>
+      <button onClick={() => dispatch(visibletrue())}>visible</button>
+      <Modal />
     <BackDiv>
-      <h1>Music Search Engine</h1>
+      <h1>{rname}</h1>
       <StyledForm onSubmit={findAlbum}>
         <StyledInput type="text" placeholder=" Wanna get Info of?" />
         <StyledButton type="submit">Submit</StyledButton>
-
       </StyledForm>
       <hr />
          {albumlist === undefined ? <h1>Please input your own keyword!</h1> : 
             <AlbumListDiv>
             {[...albumlist].map((item, index) =>
-              <AlbumDiv key={index}>
-                <AlbumTitleDiv onClick={() => dispatch({type: "MOD", name: item.name, artist: item.artist, imgurl: item.image[3]['#text']})}><Link to={`/album/${item.name}/${item.artist}`} style={LinkStyle}>{item.name}</Link></AlbumTitleDiv>
+              <AlbumDiv key={index} onClick={() => dispatch({type: "MOD", name: item.name, artist: item.artist,
+  imgurl: item.image[3]['#text']})}>
+                <AlbumTitleDiv>{item.name}</AlbumTitleDiv>
                 <h2>-{item.artist}-</h2>
                 <img src={item.image[3]['#text']} style={ImgStyle}/>
                 <br />
@@ -46,13 +50,16 @@ React.useEffect(() => {console.log(albumlist)}, [albumlist])
 
 
 const BackDiv = styled.div`
-  margin-left: 18vw;
-  margin-right: 18vw;
-  overflow: hidden;
+  padding-left: 18vw;
+  padding-right: 18vw;
+  background-image: linear-gradient(60deg, #29323c 0%, #485563 100%);
+  height: 100vh;
+  color: white;
+  overflow: auto;
 
   @media only screen and (max-width: 550px) {
-    margin-left: 10px;
-  margin-right: 10px;
+    padding-left: 10px;
+  padding-right: 10px;
   }
 `
 
@@ -111,3 +118,7 @@ const ImgStyle = {
 }
 
 export default AlbumSearch;
+
+//<Link to={`/album/${item.name}/${item.artist}`} style={LinkStyle}>{item.name}</Link>
+
+//  dispatch({type: "VISIBLE", visible: true});

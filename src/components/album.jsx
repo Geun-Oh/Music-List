@@ -25,16 +25,20 @@ const rimgurl = useSelector(state => state.imgurl)
   return(
     <StyledArticle>
       <StyleDiv url={rimgurl}>
-      <StyleH1>{selected.name}</StyleH1>
-      <strong>{rartist} {rname}</strong>
+        <StyleSpan>
+      <StyleH1>{rname}</StyleH1>
+      <strong>{rartist}</strong>
       <h3>{selected.listeners} of listeners love this song!</h3>
       <h3>{selected.playcount} played!</h3>
+        </StyleSpan>
       </StyleDiv>
+      <StyleSpan>
       <h1>For more Information</h1>
-      <ul>
+      <ul style={ulstyle}>
         <StyledLi><StyledA href={selected.url} target="_blank">{selected.url}</StyledA></StyledLi>
         <StyledLi>{selected.artist === undefined ? null : <StyledA href={selected.artist.url} target="_blank">{selected.artist.url}</StyledA>}</StyledLi>
       </ul>
+      </StyleSpan>
     </StyledArticle>
   )
 }
@@ -48,10 +52,21 @@ background-position: 50% 50%;
 height: 40vh;
 `
 
+const StyleSpan = style.div`
+padding-right: 30vw;
+padding-left: 30vw;
+bottom: 0;
+
+  @media only screen and (max-width: 768px) {
+    padding-left: 10px;
+  padding-right: 10px;
+  }
+`
+
 const StyleH1 = style.h1`
 margin-top: 0;
-margin-bottom: 60px;
-padding-top: 40px;
+margin-bottom: 0;
+padding-top: 10vh;
 `
 
 const StyledArticle = style.div`
@@ -68,6 +83,10 @@ const StyledA = style.a`
   text-decoration: none;
 color: skyblue;
 `
+
+const ulstyle = {
+  paddingLeft: "0px"
+}
 
 export default Album;
 
