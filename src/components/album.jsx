@@ -4,38 +4,50 @@ import { useSelector, useDispatch } from "react-redux";
 import style from 'styled-components'
 
 function Album() {
-  const [selected, setSelected] = React.useState([])
-  const {name, artist, image} = useParams()
-  const url = `https://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=91c5c92bb86941ab984a066b1da980ed&artist=${artist.replace(/ /gi, "%20")}&track=${name.replace(/ /gi, "%20")}&format=json`
-
+  const [albumSelected, setAlbumSelected] = React.useState([])
+  const rname = useSelector(state => state.name)
+  const rartist = useSelector(state => state.artist)
+  const rimgurl = useSelector(state => state.imgurl)
   const findSelected = async () => {
-    await fetch(url)
+    await fetch(`https://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=91c5c92bb86941ab984a066b1da980ed&artist=${rartist.replace(/ /gi, "%20")}&album=${rname.replace(/ /gi, "%20")}&format=json`)
     .then(a => a.json())
-    .then(a => setSelected(pre => [...pre, a.track]))
+    .then(a => {setAlbumSelected(a.album)})
   }
-
-const rname = useSelector(state => state.name)
-const rartist = useSelector(state => state.artist)
-const rimgurl = useSelector(state => state.imgurl)
-
-  useSelector(state => console.log(state.name))
   React.useEffect(() => findSelected(), [])
-
+  React.useEffect(() => console.log(albumSelected.tracks && albumSelected.tracks.track), [albumSelected])
+  // 태그는 일단 보류하고 나중에 첨부하기로 한다!
+  
   return(
     <StyledArticle>
       <StyleDiv url={rimgurl}>
         <StyleSpan>
-      <StyleH1>{rname}</StyleH1>
-      <strong>{rartist}</strong>
-      <h3>{selected.listeners} of listeners love this song!</h3>
-      <h3>{selected.playcount} played!</h3>
+      <StyleH1>{albumSelected && albumSelected.name}</StyleH1>
+        {albumSelected.tags === undefined ? <p>you selected not album but music!</p> :
+        <TagStyleUl>
+        {[...albumSelected.tags.tag].map((item, index) =>
+          <li key={index} style={tagstyle}>#{item.name}&nbsp;&nbsp;</li>
+        )}
+        </TagStyleUl>
+        }
+      <strong>{albumSelected && albumSelected.artist}</strong>
+      <h3 style={{paddingTop: "30px"}}>{albumSelected && albumSelected.listeners} of listeners love this song!</h3>
+      <h3>{albumSelected && albumSelected.playcount} played!</h3>
         </StyleSpan>
       </StyleDiv>
       <StyleSpan>
+        {albumSelected.tracks === undefined ? <p>you selected not album but music!</p> :
+        <ul style={ulstyle}>
+        {[...albumSelected.tracks.track].map((item, index) =>
+          <TrackStyleLi key={index}>&nbsp;&nbsp;{item.name}
+          <div>></div>
+          </TrackStyleLi>
+        )}
+        </ul>
+        }
+        <hr />
       <h1>For more Information</h1>
-      <ul style={ulstyle}>
-        <StyledLi><StyledA href={selected.url} target="_blank">{selected.url}</StyledA></StyledLi>
-        <StyledLi>{selected.artist === undefined ? null : <StyledA href={selected.artist.url} target="_blank">{selected.artist.url}</StyledA>}</StyledLi>
+        <ul style={ulstyle}>
+        <StyledLi><StyledA href={albumSelected.url} target="_blank">{albumSelected.url}</StyledA></StyledLi>
       </ul>
       </StyleSpan>
     </StyledArticle>
@@ -51,6 +63,18 @@ background-position: 50% 50%;
 height: 40vh;
 `
 
+const TagStyleUl = style.ul`
+  display: flex;
+  flex-direction: row;
+  font-size: 10px;
+   color: lightgray;
+  padding-left: 0;
+`
+
+const tagstyle = {
+  listStyleType: "none"
+}
+
 const StyleSpan = style.div`
 padding-right: 30vw;
 padding-left: 30vw;
@@ -62,6 +86,21 @@ bottom: 0;
   }
 `
 
+const TrackStyleLi = style.li`
+  height: 50px;
+  list-style-type: none;
+  border-radius: 25px;
+  border: 1px solid;
+  border-color: gray;
+  color: white;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+justify-content: space-between;
+  font: 1rem bolder;
+padding-right: 20px;
+`
+
 const StyleH1 = style.h1`
 margin-top: 0;
 margin-bottom: 0;
@@ -71,7 +110,7 @@ padding-top: 10vh;
 const StyledArticle = style.div`
   background-image: linear-gradient(to right, #434343 0%, black 100%);
 color: white;
-height: 100vh;
+height: 100%;
 `
 
 const StyledLi = style.li`
@@ -88,7 +127,5 @@ const ulstyle = {
 }
 
 export default Album;
+//        <StyledLi>{albumSelected.artist === undefined ? null : <StyledA href={albumSelected.artist.url} target="_blank">{albumSelected.artist.url}</StyledA>}</StyledLi> 나중에 undefined 다루는 글에 첨부해두기
 
-
-//url 대충 이런 식으로 작성해야 할 것!
-//http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=91c5c92bb86941ab984a066b1da980ed&artist=Lana%20Del%20Rey&track=Norman%20Fucking%20Rockwell!&format=json

@@ -8,7 +8,6 @@ import { visibletrue, visiblefalse } from '../../reducer/store'
 function AlbumSearch() {
   const [ albumlist, setAlbumlist ] = React.useState()
   const dispatch = useDispatch()
-
   const findAlbum = async (event) => {
     event.preventDefault()
     await fetch(`https://ws.audioscrobbler.com/2.0/?method=album.search&album=${event.target[0].value}&api_key=91c5c92bb86941ab984a066b1da980ed&format=json`).then(a => a.json()).then(a => {
@@ -17,7 +16,7 @@ function AlbumSearch() {
   }
   const album = React.useRef()
   const rname = useSelector(state => state.name)
-  React.useEffect(() => {console.log(rname)}, [rname]) 
+  React.useEffect(() => {console.log(albumlist)}, [rname]) 
   
   return(
     <div>
@@ -97,7 +96,7 @@ const AlbumDiv = styled.div`
   flex-direction: column;
   align-items: center;
   color: black;
-  box-shadow: 5px 5px 10px 1px #dadce0;
+  box-shadow: 0px 0px 10px #000;
 `
 
 const AlbumTitleDiv = styled.div`
