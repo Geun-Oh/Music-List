@@ -2,6 +2,8 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux";
 import style from 'styled-components'
+import backimg from './background.svg'
+import heartimg from './heart.svg'
 
 function Album() {
   const [albumSelected, setAlbumSelected] = React.useState([])
@@ -39,7 +41,7 @@ function Album() {
         <ul style={ulstyle}>
         {[...albumSelected.tracks.track].map((item, index) =>
           <TrackStyleLi key={index}>&nbsp;&nbsp;{item.name}
-          <div>></div>
+            <img src={heartimg} className="heart" align="right" />
           </TrackStyleLi>
         )}
         </ul>
@@ -108,7 +110,9 @@ padding-top: 10vh;
 `
 
 const StyledArticle = style.div`
-  background-image: linear-gradient(to right, #434343 0%, black 100%);
+  background-image: url(${backimg});
+  background-repeat: no-repeat;
+  background-size: cover;
 color: white;
 height: 100%;
 `

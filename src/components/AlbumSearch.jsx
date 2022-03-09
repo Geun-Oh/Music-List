@@ -4,6 +4,9 @@ import { useSelector, useDispatch, batch } from "react-redux"
 import styled from 'styled-components'
 import Modal from './Modal'
 import { visibletrue, visiblefalse } from '../../reducer/store'
+import backimg from './background.svg'
+import arrowimg from './arrow.svg'
+import './AlbumSearch.css'
 
 function AlbumSearch() {
   const [ albumlist, setAlbumlist ] = React.useState()
@@ -22,13 +25,12 @@ function AlbumSearch() {
     <div>
       <Modal />
     <BackDiv>
-      <h1>Music Search Engine</h1>
+      <h1 className="title">Music.rsnc</h1>
       <StyledForm onSubmit={findAlbum}>
         <StyledInput type="text" placeholder=" Wanna get Info of?" />
-        <StyledButton type="submit">Submit</StyledButton>
+        <button type="submit" className="submitbutton"><img src={arrowimg} /></button>
       </StyledForm>
-      <hr />
-         {albumlist === undefined ? <h1>Please input your own keyword!</h1> : 
+         {albumlist === undefined ? null : 
             <AlbumListDiv>
             {[...albumlist].map((item, index) =>
               <AlbumDiv ref={album} key={index} onClick={() => dispatch({type: "MOD", name: item.name, artist: item.artist, imgurl: item.image[3]['#text'], visible: true})}>
@@ -45,38 +47,50 @@ function AlbumSearch() {
   )
 }
 
+const svgstyle = {
+  position: "absolute",
+  objectFit: "cover",
+  objectPosition: "center bottom"
+}
+
 const BackDiv = styled.div`
+  position: relative;
   padding-left: 18vw;
   padding-right: 18vw;
-  background-image: linear-gradient(60deg, #29323c 0%, #485563 100%);
+  background-image: url(${backimg});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
   height: 100vh;
   color: white;
   overflow: auto;
 
   @media only screen and (max-width: 550px) {
     padding-left: 10px;
-  padding-right: 10px;
+    padding-right: 10px;
   }
 `
 
 const StyledForm = styled.form`
-  width: 100%;
+  width: 350px;
+  margin-left: auto;
+  margin-right: auto;
   display: flex;
-  align-content: space-between;
-margin-top: 30px;
+  justify-content: center;
+  border-bottom: 1px solid gray;
+margin-top: 100px;
 margin-bottom: 30px;
 `
 
 const StyledInput = styled.input`
-  width: 50%;
+  width: 300px;
+  text-align: center;
+  font-size: 1rem;
+  color: white;
   height: 30px;
   border: none;
-  background: lightgray;
-  border-radius: 10px;
-`
-const StyledButton = styled.button`
-  border: none;
   background: none;
+
 `
 
 const AlbumListDiv = styled.div`
