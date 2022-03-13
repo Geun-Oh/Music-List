@@ -49,6 +49,10 @@ function Album() {
         <hr />
       <h1>For more Information</h1>
         <ul style={ulstyle}>
+          <h2>Wiki</h2>
+          {albumSelected.wiki === undefined ? null :
+          <p>{albumSelected.wiki.summary} <br /> <br />{albumSelected.wiki.content}</p>
+          }
         <StyledLi><StyledA href={albumSelected.url} target="_blank">{albumSelected.url}</StyledA></StyledLi>
       </ul>
       </StyleSpan>
